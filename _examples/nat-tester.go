@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	nat, err := nat.DiscoverGateway()
+	nat, err := nat.DiscoverGateway(nat.DefaultTimeout)
 	if err != nil {
 		log.Fatalf("error: %s", err)
 	}

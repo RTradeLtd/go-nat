@@ -12,9 +12,12 @@ import (
 	"github.com/jackpal/gateway"
 )
 
-var ErrNoExternalAddress = errors.New("no external address")
-var ErrNoInternalAddress = errors.New("no internal address")
-var ErrNoNATFound = errors.New("no NAT found")
+var (
+	ErrNoExternalAddress = errors.New("no external address")
+	ErrNoInternalAddress = errors.New("no internal address")
+	ErrNoNATFound        = errors.New("no NAT found")
+	DefaultTimeout       = time.Second * 10
+)
 
 // protocol is either "udp" or "tcp"
 type NAT interface {
@@ -87,8 +90,8 @@ func DiscoverNATs(ctx context.Context) <-chan NAT {
 }
 
 // DiscoverGateway attempts to find a gateway device.
-func DiscoverGateway() (NAT, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+func DiscoverGateway(timeout time.Duration) (NAT, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
 	var nats []NAT
